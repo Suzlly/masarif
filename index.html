@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no"
+    />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="مصاريف" />
+    <meta name="theme-color" content="#0b1020" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png" />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <title>مصاريف — إدارة الميزانية</title>
+    <script>
+      /*
+       * تطبيق المظهر قبل أول رسم — بلا وميض.
+       *
+       * لماذا سكربت مبكّر وليس في React؟ لأن React يُحمَّل بعد تنزيل الحزمة،
+       * فلو انتظرنا لقفزت الصفحة من الداكن إلى الفاتح أمام المستخدم في كل فتح
+       * للتطبيق. هذا السكربت متزامن ويعمل قبل رسم أي بكسل.
+       *
+       * والاختيار محفوظ في localStorage (لا في IndexedDB) لأن قراءته هنا يجب
+       * أن تكون متزامنة. التفاصيل الكاملة في src/core/theme.ts.
+       *
+       * «تلقائي» = لا نكتب السمة إطلاقاً، فيتولّى CSS (prefers-color-scheme)
+       * الأمر ويبقى التطبيق حيّاً مع تغيّر نظام الجهاز.
+       */
+      (function () {
+        try {
+          var t = localStorage.getItem('money.theme');
+          var dark = true;
+          try {
+            var prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+            dark = t === 'dark' ? true : t === 'light' ? false : !prefersLight;
+          } catch (e) {
+            dark = t === 'light' ? false : true;
+          }
+          if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;
+          var bar = document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]');
+          if (bar) bar.setAttribute('content', dark ? 'black-translucent' : 'default');
+        } catch (e) {
+          /* أي فشل ⇒ نبقى على الافتراضي الداكن، والتطبيق يعمل */
+        }
+      })();
+    </script>
+    <script type="module" crossorigin src="./assets/index-DrgdNowa.js"></script>
+    <link rel="modulepreload" crossorigin href="./assets/native-uj5Z-jqZ.js">
+    <link rel="stylesheet" crossorigin href="./assets/index-HJjubYZN.css">
+  <link rel="manifest" href="./manifest.webmanifest"></head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>

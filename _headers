@@ -1,0 +1,29 @@
+# رؤوس HTTP لاستضافة الملفات الثابتة (Cloudflare Pages / Netlify).
+# الملف يُنسخ تلقائياً إلى dist/ ولن يُقرأ عند التشغيل محلياً.
+
+# ملفات التحكم في الكاش وسكربت الخدمة: يجب ألا تُخزَّن مطلقاً،
+# وإلا بقي المستخدم على نسخة قديمة من التطبيق بعد كل تحديث.
+/index.html
+  Cache-Control: no-cache
+  X-Content-Type-Options: nosniff
+
+/*.js
+  Cache-Control: no-cache
+  X-Content-Type-Options: nosniff
+
+/manifest.webmanifest
+  Content-Type: application/manifest+json
+  Cache-Control: no-cache
+
+# ملفات الحزمة تحمل بصمة في الاسم (index-XXXX.js) ⇒ التخزين المؤقت للأبد آمن.
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/icons/*
+  Cache-Control: public, max-age=604800
+
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: no-referrer
+  X-Frame-Options: DENY
+  Permissions-Policy: geolocation=(), camera=(), microphone=(), payment=()
